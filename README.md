@@ -1,5 +1,5 @@
 # Vuejs - 練習筆記 - 踩地雷小遊戲
-[遊戲連結](https://)
+[遊戲連結](https://nono1526.github.io/Minesweeper/)
 ## 目標
 練習使用 vuejs 的雙向資料綁定控制踩地雷這個小遊戲,  
 也增加使用 vuejs 的熟悉度,  
