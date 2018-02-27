@@ -1,0 +1,115 @@
+@import "others/modal";
+* {
+    -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+  }   
+
+$border-color: #e7e7e7;
+$font-color: #636363;
+body{
+    background:
+        radial-gradient(rgb(10, 83, 126)   15%, transparent   16%) 0   0,
+        radial-gradient(rgb(10, 83, 126)   15%, transparent   16%) 8px   8px,
+        radial-gradient(rgba(10, 83, 126,.1) 15%, transparent   20%) 0   1px,
+        radial-gradient(rgba(10, 83, 126,.1) 15%, transparent   20%) 8px   9px;
+    background-color:#282828;
+    background-size:16px   16px;
+    background-attachment: fixed;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    min-height: 500px;
+
+}
+#app{
+    display:flex;
+    text-align:center;
+    flex-direction: column;
+    align-items: center;
+    .timer{
+        background-color:#fff;
+
+        padding: 10px;
+        border: 1px solid $border-color;
+        width: 100%;
+        font-size: 18px;
+        color:red;
+    }
+    .default-btn{
+        background-color: black;
+        color: white;
+        padding: 5px;
+        font-size: 18px;
+        flex:1;
+        width: 300px;
+        border:0;
+        cursor: pointer;
+        border-radius: 3px;
+
+    }
+    ul{
+        flex:1;
+        display:flex;
+        width: 300px;
+        list-style:none;
+        flex-direction: row;
+        text-align:center;
+    }
+    li{
+        background-color:#fff;
+        cursor: pointer;
+        padding:5px;
+        color:$font-color;
+        text-align:center;
+        flex:1;
+        height: 30px;
+        border: 1px solid $border-color;
+    }
+    .number-0{
+        color: $border-color;
+        background-color:$border-color;
+    }
+    .number-1{
+        color: blue;
+    }
+
+    .number-2{
+        color: green;
+    }
+
+    .number-3{
+        color: red;
+    }
+
+    .number-4{
+        color: brown;
+    }
+
+    .number-5{
+        color: purple;
+    }
+
+    .number-6{
+        color: orange;
+    }
+
+    .number-7{
+        color: mediumaquamarine;
+    }
+    .number-8{
+        color: black;
+    }
+    .mine{
+        color: black;
+        background-color: $font-color;
+
+    }
+    .flag{
+        color: red;
+    }
+}

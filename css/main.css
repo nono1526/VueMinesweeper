@@ -1,0 +1,136 @@
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: table;
+  transition: opacity 0.3s ease; }
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle; }
+
+.modal-container {
+  width: 300px;
+  margin: 0px auto;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all .3s;
+  -webkit-transition-timing-function: cubic-bezier(0.17, 0.67, 0.78, 1.33);
+  -webkit-transition-timing-function: cubic-bezier(0.17, 0.67, 0.78, 1.33); }
+
+.modal-enter {
+  opacity: 0; }
+
+.modal-enter-to {
+  opacity: 1; }
+
+.modal-leave-to {
+  opacity: 0; }
+
+.modal-enter .modal-container,
+.modal-leave-to .modal-container {
+  transform: translateY(-300px); }
+
+.modal-header, .modal-body, .modal-footer {
+  margin: 5px;
+  padding: 5px; }
+
+.modal-header h2 {
+  color: #636363; }
+
+.modal-btn {
+  background-color: #fff;
+  border-radius: 3px;
+  border: #636363 1px solid;
+  box-shadow: 3px 3px 3px #e7e7e7;
+  padding: 5px;
+  font-size: 18px;
+  width: 100px;
+  cursor: pointer;
+  color: #636363; }
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0; }
+
+body {
+  background: radial-gradient(#0a537e 15%, transparent 16%) 0 0, radial-gradient(#0a537e 15%, transparent 16%) 8px 8px, radial-gradient(rgba(10, 83, 126, 0.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(10, 83, 126, 0.1) 15%, transparent 20%) 8px 9px;
+  background-color: #282828;
+  background-size: 16px   16px;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  min-height: 500px; }
+
+#app {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center; }
+  #app .timer {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #e7e7e7;
+    width: 100%;
+    font-size: 18px;
+    color: red; }
+  #app .default-btn {
+    background-color: black;
+    color: white;
+    padding: 5px;
+    font-size: 18px;
+    flex: 1;
+    width: 300px;
+    border: 0;
+    cursor: pointer;
+    border-radius: 3px; }
+  #app ul {
+    flex: 1;
+    display: flex;
+    width: 300px;
+    list-style: none;
+    flex-direction: row;
+    text-align: center; }
+  #app li {
+    background-color: #fff;
+    cursor: pointer;
+    padding: 5px;
+    color: #636363;
+    text-align: center;
+    flex: 1;
+    height: 30px;
+    border: 1px solid #e7e7e7; }
+  #app .number-0 {
+    color: #e7e7e7;
+    background-color: #e7e7e7; }
+  #app .number-1 {
+    color: blue; }
+  #app .number-2 {
+    color: green; }
+  #app .number-3 {
+    color: red; }
+  #app .number-4 {
+    color: brown; }
+  #app .number-5 {
+    color: purple; }
+  #app .number-6 {
+    color: orange; }
+  #app .number-7 {
+    color: mediumaquamarine; }
+  #app .number-8 {
+    color: black; }
+  #app .mine {
+    color: black;
+    background-color: #636363; }
+  #app .flag {
+    color: red; }

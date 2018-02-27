@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>vue 踩地雷</title>
+  <script src="https://unpkg.com/vue"></script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div id="app">
+
+
+   
+    <button @click="newGame" class="default-btn">New Game</button>
+    <timer :bus="bus" class="timer">0:00</timer>
+    <ul v-for="(row,r) in myMap">
+      <li @click="open(r,c)" :class="[col.activeClass]" v-for="(col,c) in row" @contextmenu.prevent="flagTile(r, c)">
+        {{ col.status }}
+      </li>
+    </ul>
+    <modal v-if="showModal" @close="showModal = false"></modal>
+  </div>
+
+
+
+  <!-- modal -->
+  <script type="text/x-template" id="modal-template">
+    <transition name="modal">
+      <div class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container">
+            <div class="modal-header">
+              <h2>You Win!!!!</h2>
+            </div>
+            <div class="modal-body">
+              恭喜你過關了～！！！
+            </div>
+            <div class="modal-footer">
+              <button class="modal-btn" @click="$emit('close')">close</button>    
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </script>
+
+
+  <!-- timer -->
+  <script type="text/x-template" id="timer-template">
+    <transition name="timer">
+      <div class="timer">
+        {{formatTime}}
+      </div>
+    </transition>
+  </script>
+
+
+  <script>
+    //引入 template modal
+    Vue.component('modal',{
+      template: '#modal-template'
+    });
+    //引入 template timer
+    Vue.component('timer',{
+      template: '#timer-template',
+      props: ['bus'],// 傳入 event bus
+      data(){
+        return {
+          time: 0,
+          timer: null
+        }
+      },
+      computed:{
+        formatTime(){
+          let leftSec = this.time;
+          let min = Math.floor(leftSec / 60);
+          leftSec = leftSec % 60;
+          if (min<10) {min = `0${min}`}
+          if (leftSec<10) {leftSec = `0${leftSec}`}
+
+          return `${min}:${leftSec}`
+        }
+      },
+      methods:{
+        start(){
+          this.time = 0;
+          this.timer = setInterval(() => this.time++,1000);
+        },
+        end(){
+          clearInterval(this.timer);
+        }
+      },
+      mounted() {
+        this.bus.$on('timerStart', this.start); //綁定 event bus 讓父層使用
+        this.bus.$on('timerEnd', this.end); //綁定 event bus 讓父層使用
+      }, 
+    });
+    //資料雙向榜定
+    //直接修改地雷資訊就會修改
+    var app = new Vue({
+      el: '#app',
+      data: {
+        bus: new Vue(), //event bus
+        gameStatus: false,
+        rows: 10,
+        columns: 10,
+        bomb: 10,
+        myMap:[],
+        showModal: false,
+      },
+      mounted(){
+        this.newGame();
+      },
+      computed:{
+        printTile(r,c){ //創造出一個陣列
+          this.myMap[r][c].status;
+        }
+      },
+      methods: {
+        newGame(){
+          this.bus.$emit('timerEnd'); // use method by clild timer.start();
+
+          this.bus.$emit('timerStart'); // use method by clild timer.start();
+          
+          this.gameStatus = true;
+          this.myMap = Array(this.rows).fill(
+          ).map((row)=>{
+             return Array(this.columns).fill(0).map((column=> {
+               return {
+                 mined: Math.random() * 6 > 5,
+                 status: "",
+                 isOpen: false,
+                 activeClass: 'number-red'
+               }
+            
+            }));
+          });
+        },
+
+        open(r,c){
+          let tile = this.myMap[r][c];
+          let showTile = '';
+          if(tile.isOpen){return}
+          tile.isOpen = true;
+          if(tile.mined){
+            showTile = '💣';
+            tile.activeClass = 'mine';
+            this.gameStatus = false; //遊戲結束
+            this.openAll();
+            this.bus.$emit('timerEnd'); // use method by clild timer.start();
+
+          }else{
+            let around = this.countAroundMines(r,c);
+            if( around == 0){
+              this.clickAround(r,c);
+            }
+            tile.activeClass = `number-${around}`;
+            showTile = around;
+          }
+          if(this.isWin() && this.gameStatus){
+            this.showModal = true;
+            this.gameStatus = false;
+            this.bus.$emit('timerEnd'); // use method by clild timer.start();
+
+          }
+
+          tile.status = showTile;
+        },
+        countAroundMines(r,c){
+          return[[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1],[1, -1], [1, 0], [1, 1]]
+          .filter(set => {
+            let x = r+set[0];
+            let y = c+set[1];
+            if(this.valid(x,y)){
+              return this.myMap[x][y].mined;
+            }
+          }).length;
+        },
+        clickAround(r,c){
+          [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1],[1, -1], [1, 0], [1, 1]]
+          .forEach(set => {
+            let x = r+set[0];
+            let y = c+set[1];
+            if(this.valid(x,y)){
+              this.open(r+set[0],c+set[1]);
+            }
+          });
+        },
+        isWin(){
+          let  status = true;
+          this.myMap.forEach((row,r)=> {
+            row.forEach((col,c) => {
+              if(!col.mined && !col.isOpen){ status = false }
+            })
+          });
+          return status;
+
+        },
+        valid(r, c) {
+          return (r >= 0 && r < this.rows) &&
+                (c >= 0 && c < this.columns);
+        },
+        flagTile(r,c){
+          let tile = this.myMap[r][c];
+          if(tile.isOpen){return}
+          if(tile.status.includes('⛳')){
+            tile.status = '';
+            tile.activeClass = '';
+          }else{
+            tile.status = '⛳';
+            tile.activeClass = 'flag';
+          }
+
+        },
+        openAll(){
+          this.myMap.forEach((row,r)=> {
+            row.forEach((col,c) => {
+              this.open(r,c);
+            })
+          });
+        }
+
+      }
+    })
+  </script>
+</body>
+</html>
