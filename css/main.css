@@ -109,6 +109,7 @@ body {
     text-align: center;
     flex: 1;
     height: 30px;
+    font-size:12px;
     border: 1px solid #e7e7e7; }
   #app .number-0 {
     color: #e7e7e7;
